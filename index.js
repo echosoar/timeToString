@@ -15,11 +15,23 @@ let language = {
 		minute: '分钟前',
 		hour: '小时前',
 		yesterday: '昨天',
-		day: '天钱',
+		day: '天前',
 		lastWeek: '上周',
 		week: '周前',
 		month: '个月前',
 		year: '年前'
+	}, 
+	en : {
+		now: 'Just Now',
+		second: 'Seconds Ago',
+		minute: 'Minutes Ago',
+		hour: 'Hours Ago',
+		yesterday: 'Yesterday',
+		day: 'Days Ago',
+		lastWeek: 'Last Week',
+		week: 'Weeks Ago',
+		month: 'Monthes Ago',
+		year: 'Years Ago'
 	}
 }
 
