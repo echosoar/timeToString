@@ -23,16 +23,23 @@ let language = {
 	}, 
 	en : {
 		now: 'Just Now',
-		second: 'Seconds Ago',
-		minute: 'Minutes Ago',
-		hour: 'Hours Ago',
+		second: 'Second Ago',
+		minute: 'Minute Ago',
+		hour: 'Hour Ago',
 		yesterday: 'Yesterday',
-		day: 'Days Ago',
+		day: 'Day Ago',
 		lastWeek: 'Last Week',
-		week: 'Weeks Ago',
-		month: 'Monthes Ago',
-		year: 'Years Ago'
+		week: 'Week Ago',
+		month: 'Month Ago',
+		year: 'Year Ago'
 	}
+}
+
+let valueFormat = (number, unit, lang) => {
+	if(number > 1) {
+		if(lang == 'en') return [number, unit.replace(/^\s(.*?)\s/, "$1s ")].join(" ");
+	}
+	return number + unit;
 }
 
 module.exports = (timestamp, lang) => {
@@ -56,20 +63,20 @@ module.exports = (timestamp, lang) => {
 	
 	let timeDifferenceSecond = Math.floor(timeDifference/1000);
 	if(timeDifferenceSecond == 0) return unit['now'];
-	if(timeDifferenceSecond < 60) return timeDifferenceSecond + unit['second'];
+	if(timeDifferenceSecond < 60) return valueFormat(timeDifferenceSecond, unit['second'], lang);
 	
 	let timeDifferenceMinute = Math.floor(timeDifferenceSecond/60);
-	if(timeDifferenceMinute < 60) return timeDifferenceMinute + unit['minute'];
+	if(timeDifferenceMinute < 60) return valueFormat(timeDifferenceMinute, unit['minute'], lang);
 	
 	let timeDifferenceHour = Math.floor(timeDifferenceMinute/60);
-	if(timeDifferenceHour - timeHour <= 0) return timeDifferenceHour + unit['hour'];
+	if(timeDifferenceHour - timeHour <= 0) return valueFormat(timeDifferenceHour, unit['hour'], lang);
 	
 	timeDifferenceHour -= timeHour;
 	
 	let timeDifferenceDay = Math.floor(timeDifferenceHour/24);
 	
 	if(timeDifferenceDay < 1) return unit['yesterday'];
-	if(timeDifferenceDay < timeWeek) return timeDifferenceDay + unit['day'];
+	if(timeDifferenceDay < timeWeek) return valueFormat(timeDifferenceDay, unit['day'], lang);
 	
 	timeDifferenceDay -= timeWeek;
 	
@@ -82,14 +89,14 @@ module.exports = (timestamp, lang) => {
 	if(day < 0) month --;
 	if(month < 0) year --;
 	
-	if(year > 0) return year + unit['year'];
-	if(month > 0) return month + unit['month'];
+	if(year > 0) return valueFormat(year, unit['year'], lang);
+	if(month > 0) return valueFormat(month, unit['month'], lang);
 	
-	if(month == 0) return Math.floor(timeDifferenceDay/7) + unit['week'];
+	if(month == 0) return valueFormat(Math.floor(timeDifferenceDay/7), unit['week'], lang);
 	
 	if(month < 0) {
 		month = (year + 1) * 12 + month;
-		if(month > 0) return month + unit['month'];
+		if(month > 0) return valueFormat(month, unit['month'], lang);
 	}
 }
 
